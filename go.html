@@ -231,7 +231,7 @@
     <a-assets>
       <video id="video_input" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline></video>
     </a-assets>
-    <a-videosphere src="#video_input" rotation="0 180 0" play-on-window-click geometry="thetaLength: 180"/>
+    <a-videosphere src="#video_input" play-on-window-click radius="500" segments-height="480" segments-width="640"/>
     <a-camera user-height="0" wasd-controls-enabled="false" arrow-key-rotation>
       <!-- Text element for display messaging.  Hide once video is playing. -->
       <a-entity id="msg" position="0 -0.3 -1.5" text="align:center; 
