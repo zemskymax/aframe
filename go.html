@@ -82,7 +82,7 @@
 
   let localStream = null;
   function startMediaAndJoinRoom() {
-    const mediaConstraints = {video: false, audio: true};
+    const mediaConstraints = {video: false, audio: false};
     navigator.mediaDevices.getUserMedia(mediaConstraints)
     .then( stream => {
       _logStream(stream);
@@ -201,6 +201,28 @@
     });
 
   </script>
+  <script type="text/javascript">
+    document.onkeydown = keydown;
+    function keydown(){
+      if(event.key == 'l'){
+        var camera = document.getElementById('camera');
+        //camera.aspect = 1920 / 1080;
+        var rotationOfCamera = camera.getAttribute('rotation');
+        camera.setAttribute('rotation', {x: 0, y: 286, z: 0});
+      }
+      if(event.key == 'c'){
+        var camera = document.getElementById('camera');
+        //camera.aspect = 3840 / 1080;
+        var rotationOfCamera = camera.getAttribute('rotation');
+        camera.setAttribute('rotation', {x: 0, y: 0, z: 0});
+      }
+      if(event.key == 'r'){
+        var camera = document.getElementById('camera');
+        var rotationOfCamera = camera.getAttribute('rotation');
+        camera.setAttribute('rotation', {x: 0, y: 74, z: 0});
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -209,7 +231,7 @@
     <a-assets>
       <video id="video_input" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline></video>
     </a-assets>
-    <a-videosphere src="#video_input" rotation="0 120 0" play-on-window-click />
+    <a-videosphere src="#video_input" play-on-window-click geometry="thetaLength: 120"/>
     <a-camera user-height="0" wasd-controls-enabled="false" arrow-key-rotation>
       <!-- Text element for display messaging.  Hide once video is playing. -->
       <a-entity id="msg" position="0 -0.3 -1.5" text="align:center; 
