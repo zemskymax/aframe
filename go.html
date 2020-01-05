@@ -136,8 +136,11 @@
     console.info("remote media stop");
   }
   function hideWaitMessage() {
-    const element = document.getElementById("wait_massage");
-    element.style.display = 'none';
+    const element_1 = document.getElementById("wait_massage");
+    element_1.style.display = 'none';
+
+    const element_2 = document.getElementById("msg");
+    element_2.style.display = 'none';
   }
   </script>
   <script>
@@ -191,6 +194,8 @@
     <a-assets>
       <a-video id="video1" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline></a-video>
     </a-assets>
+
+    <a-entity geometry="primitive: sphere; thetaLength: 120; radius: 5000; segmentsWidth: 64; segmentsHeight: 20" scale="1 1 -1" material="src: #video1; shader: flat"></a-entity>
 
     <a-entity id="msg" position="0 -0.3 -1.5" text="align:center; 
       width:3;
