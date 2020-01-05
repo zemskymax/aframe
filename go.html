@@ -24,7 +24,6 @@
         console.error('ASSERT in %s, %s is :', caller, desc, v);
       }
     }
-
     function _logStream(stream) {
       console.log(msg + ': id=' + stream.id);
       const videoTracks = stream.getVideoTracks();
@@ -35,7 +34,6 @@
           console.log('track.id=' + track.id);
         }
       }
-
       const audioTracks = stream.getAudioTracks();
       if (audioTracks) {
         console.log('audioTracks.length=' + audioTracks.length);
@@ -48,16 +46,14 @@
   </script>
   <script type="text/javascript">
   // ----- use skyway room ----
-  let myApiKey = '0352c7fb-ac6f-4227-89c9-54b0d969623e'; //null; // set your API key
+  let myApiKey = '4ff0a85b-4015-4e8b-94f6-4fab24c759e0'; //null; // set your API key
   let peer = null;
   let meshRoom = null;
   const defaultRoomName = '_oculusgo_test_room';
-
   function getApiKey() {
     let key = document.getElementById('api_key_text').value;
     return key;
   }
-
   function getApiKeyFromURL() {
     const search = window.location.search;
     const re = new RegExp('apikey=([^&=]+)');
@@ -66,10 +62,8 @@
       //document.getElementById('api_key_text').value = results[1];
       return results[1];
     }
-
     return null;
   }
-
   function getRoomFromURL() {
     const search = window.location.search;
     const re = new RegExp('room=([^&=]+)');
@@ -79,10 +73,9 @@
       return results[1];
     }
   }
-
   let localStream = null;
   function startMediaAndJoinRoom() {
-    const mediaConstraints = {video: false, audio: false};
+    const mediaConstraints = {video: false, audio: true};
     navigator.mediaDevices.getUserMedia(mediaConstraints)
     .then( stream => {
       _logStream(stream);
@@ -93,7 +86,6 @@
       console.error('getUserMedia ERROR:', err );
     })
   }
-
   function joinRoom(stream) {
     let apiKey = getApiKeyFromURL() || myApiKey;
     if ((! apiKey) || (apiKey === '')) {
@@ -101,7 +93,6 @@
       return;
     }
     const roomName = getRoomFromURL() || defaultRoomName;
-
     peer = new Peer({key: apiKey, debug: 1});
     peer.on('open',function() {
       console.log('--open--');
@@ -123,38 +114,31 @@
         detachVideo(peerId);
       });
     });
-
     // -- kick to play in iOS 11 Safari --
     //setTimeout(playAllRemoteVideo, 1000);
   }
-
   function leaveRoom() {
     if (meshRoom) {
        meshRoom.close();
     }
-
     detachVideo('_any_');
   }
-
   function attachVideo(id, stream) {
-    const videoElement = document.getElementById("video_input");
+    const videoElement = document.getElementById("video1");
     videoElement.srcObject = stream;
     videoElement.play();
     console.info("remote media start");
   }
-
   function detachVideo(id) {
-    const videoElement = document.getElementById("video_input");
+    const videoElement = document.getElementById("video1");
     videoElement.pause();
     videoElement.srcObject = null;
     console.info("remote media stop");
   }
-
   function hideWaitMessage() {
     const element = document.getElementById("wait_massage");
     element.style.display = 'none';
   }
-
   </script>
   <script>
     AFRAME.registerComponent('play-on-window-click', {
@@ -173,7 +157,6 @@
         //startMediaAndJoinRoom();
       }
     });
-
     AFRAME.registerComponent('hide-once-playing', {
       schema: {type: 'selector'},
       init: function () {
@@ -199,29 +182,6 @@
         this.el.setAttribute('visible', true);
       }
     });
-
-  </script>
-  <script type="text/javascript">
-    document.onkeydown = keydown;
-    function keydown(){
-      if(event.key == 'l'){
-        var camera = document.getElementById('camera');
-        //camera.aspect = 1920 / 1080;
-        var rotationOfCamera = camera.getAttribute('rotation');
-        camera.setAttribute('rotation', {x: 0, y: 286, z: 0});
-      }
-      if(event.key == 'c'){
-        var camera = document.getElementById('camera');
-        //camera.aspect = 3840 / 1080;
-        var rotationOfCamera = camera.getAttribute('rotation');
-        camera.setAttribute('rotation', {x: 0, y: 0, z: 0});
-      }
-      if(event.key == 'r'){
-        var camera = document.getElementById('camera');
-        var rotationOfCamera = camera.getAttribute('rotation');
-        camera.setAttribute('rotation', {x: 0, y: 74, z: 0});
-      }
-    }
   </script>
 </head>
 
@@ -229,19 +189,11 @@
   <div id="wait_massage">Please wait for loading ...</div>
   <a-scene>
     <a-assets>
-      <video id="video_input" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline></video>
+      <video id="video1" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline></video>
     </a-assets>
-    <a-videosphere src="#video_input" play-on-window-click radius="1000" segments-height="480" segments-width="640"/>
-    <a-camera user-height="0" wasd-controls-enabled="false" far="50000">
-      <!-- Text element for display messaging.  Hide once video is playing. -->
-      <a-entity id="msg" position="0 -0.3 -1.5" text="align:center; 
-              width:3;
-              wrapCount:100;
-              color: #FF8080;
-              value:Please click window to start 360 video streaming."
-              hide-once-playing="#video_input">
-      </a-entity>
-    </a-camera>
+
+    <a-videosphere src="#video1" rotation="0 -90 0" play-on-window-click loop="true" ></a-videosphere>
+
   </a-scene>
 </body>
 <script type="text/javascript">
