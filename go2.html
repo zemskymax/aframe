@@ -12,7 +12,8 @@
   <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
   // 0.6.1, 0.7.0, 0.7.1 OK (0.7.2, 0.7.5 NO exist)
   -->
-  <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+  <!--<script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>-->
+  <script src="aframe-stereo-component.min.js"></script>
   <script type="text/javascript" src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
   <script>
     function _assert(desc, v) {
@@ -168,39 +169,11 @@
         window.removeEventListener('click', this.onClick);
       },
       onClick: function (evt) {
-        hideWaitMessage();
+        //hideWaitMessage();
         joinRoom(null);
         //startMediaAndJoinRoom();
       }
     });
-
-    /*
-    AFRAME.registerComponent('hide-once-playing', {
-      schema: {type: 'selector'},
-      init: function () {
-        this.onPlaying = this.onPlaying.bind(this);
-        this.onPause = this.onPause.bind(this);
-      },
-      play: function () {
-        if (this.data) {
-          this.data.addEventListener('playing', this.onPlaying);
-          this.data.addEventListener('pause', this.onPause);
-        }
-      },
-      pause: function () {
-        if (this.data) {
-          this.data.removeEventListener('playing', this.onPlaying);
-          this.data.removeEventListener('pause', this.onPause);
-        }
-      },
-      onPlaying: function (evt) {
-        this.el.setAttribute('visible', false);
-      },
-      onPause: function (evt) {
-        this.el.setAttribute('visible', true);
-      }
-    });
-    */
 
   </script>
 </head>
@@ -208,34 +181,36 @@
 <body>
   <div id="wait_massage">Please wait for loading ...</div>
   <a-scene>
-    <a-assets>
-      <video id="video1" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline></video>
-    </a-assets>
-    <a-videosphere src="#video1" rotation="0 180 0" segments-height="480" segments-width="640" 
-      play-on-window-click
-    >
-    </a-videosphere>
+    <video id="video1" autoplay loop></video>
 
-    <a-camera user-height="0" wasd-controls-enabled="false" far="50000">
-      <!-- Text element for display messaging.  Hide once video is playing. -->
-      <a-entity id="msg" position="0 -0.3 -1.5" text="align:center; 
-              width:3;
-              wrapCount:100;
-              color: #FF8080;
-              value:Please click window to start 360 video streaming."
-              hide-once-playing="#video1">
-      </a-entity>
-    </a-camera>   
+    <a-camera position="0 0 10" cursor-visible="false" stereocam="eye:left;"></a-camera>
 
+    <a-entity geometry="primitive: sphere;
+      thetaStart: 60; 
+      thetaLength: 60;
+      phiStart: 45;
+      phiLength: 90;
+      radius: 100;
+      segmentsWidth: 64;
+      segmentsHeight: 64;"
+      material="shader: flat; src: #video1;"
+      scale="-1 1 1" stereo="eye:left">
+    </a-entity>
+
+    <a-entity geometry="primitive: sphere;
+      thetaStart: 60;
+      thetaLength: 60; 
+      phiStart: 45;
+      phiLength: 90;
+      radius: 100;
+      segmentsWidth: 64;
+      segmentsHeight: 64;"
+      material="shader: flat; src: #video1;"
+      scale="-1 1 1" stereo="eye:right">
+    </a-entity>
   </a-scene>
 </body>
 <script type="text/javascript">
-  //joinRoom();
-  var video = document.querySelector('#video1');
-  var msg = document.querySelector('#msg');
-   video.addEventListener('playing', function () {
-    var currentSource = video.querySelector('[src="' + video.currentSrc + '"]');
-    msg.setAttribute('text', 'value', '');
-  });
+  joinRoom();
 </script>
 </html>
