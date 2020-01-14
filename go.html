@@ -75,7 +75,7 @@
   }
   let localStream = null;
   function startMediaAndJoinRoom() {
-    const mediaConstraints = {video: false, audio: true};
+    const mediaConstraints = {video: false, audio: false};
     navigator.mediaDevices.getUserMedia(mediaConstraints)
     .then( stream => {
       _logStream(stream);
